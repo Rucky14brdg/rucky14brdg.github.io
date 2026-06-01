@@ -26,7 +26,7 @@ li {
 }
 
 h1 {
-  margin: 1em 0 1em;
+  margin: 1em 0 0;
 }
 
 h2 {
@@ -41,6 +41,9 @@ h2 {
 
 header {
   text-align: left;
+  border-bottom: 1px solid #000;
+  padding-bottom: 1.5em;
+  margin-bottom: 1em;
 }
 
 .layout {
@@ -92,4 +95,75 @@ header {
 
 .post {
   padding-top: 0.5em;
+}
+
+.article-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+  padding-left: 1em;
+}
+
+.article-list a {
+  color: #000;
+  text-decoration: none;
+}
+
+.article-list a:hover {
+  text-decoration: underline;
+}
+
+.article-date {
+  margin-right: 0.5em;
+}
+
+.site-title-link,
+.article-page a,
+.markdown-content a {
+  color: #000;
+}
+
+.site-title-link {
+  text-decoration: none;
+}
+
+.article-page {
+  padding-top: 0.5em;
+}
+
+.article-page > p {
+  margin-bottom: 1em;
+}
+
+.markdown-content h1 {
+  font-size: 1.5em;
+  margin: 1em 0 0.7em;
+}
+
+.markdown-content h2 {
+  margin-top: 1.4em;
+}
+
+.markdown-content p,
+.markdown-content ul,
+.markdown-content ol,
+.markdown-content blockquote,
+.markdown-content pre {
+  margin: 0.8em 0;
+}
+
+.markdown-content p,
+.markdown-content li {
+  text-indent: 0;
+}
+
+.markdown-content code,
+.markdown-content pre {
+  font-family: "MS Gothic", monospace;
+}
+
+.markdown-content pre {
+  overflow-x: auto;
+  padding: 0.8em;
+  border: 1px solid #000;
 }
