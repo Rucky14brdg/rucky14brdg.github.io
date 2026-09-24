@@ -24,32 +24,17 @@
 	</div>
 
 	<script>
-		var params = new URLSearchParams(window.location.search);
-		var file = params.get("file");
+		var file = new URLSearchParams(window.location.search).get("file");
 		var article = document.getElementById("markdown-content");
+		var path = file.indexOf("articles/") === 0 ? file : "articles/" + file;
 
-		if (!file || file.indexOf("/") !== -1 || !file.endsWith(".md")) {
-			article.innerHTML = "<p>記事を指定してください。</p>";
-		} else {
-			fetch("articles/" + file)
-				.then(function (response) {
-					if (!response.ok) {
-						throw new Error("Markdown file not found.");
-					}
-					return response.text();
-				})
-				.then(function (text) {
-					article.innerHTML = marked.parse(text);
-
-					var heading = article.querySelector("h1");
-					if (heading) {
-						document.title = heading.textContent + " - 石橋のはたけ";
-					}
-				})
-				.catch(function () {
-					article.innerHTML = "<p>記事を読み込めませんでした。</p>";
-				});
-		}
+		fetch(path)
+			.then(function (response) {
+				return response.text();
+			})
+			.then(function (text) {
+				article.innerHTML = marked.parse(text);
+			});
 	</script>
 </body>
 
