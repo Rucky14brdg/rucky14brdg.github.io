@@ -16,7 +16,7 @@
 		</header>
 
 		<main class="article-page">
-			<p><a href="index.html">戻る</a></p>
+			<p><a href="javascript:history.back();">戻る</a></p>
 			<article id="markdown-content" class="markdown-content">
 				<p>読み込み中</p>
 			</article>
@@ -26,15 +26,46 @@
 	<script>
 		var file = new URLSearchParams(window.location.search).get("file");
 		var article = document.getElementById("markdown-content");
-		var path = file.indexOf("articles/") === 0 ? file : "articles/" + file;
 
-		fetch(path)
-			.then(function (response) {
-				return response.text();
-			})
-			.then(function (text) {
-				article.innerHTML = marked.parse(text);
-			});
+		if (!file) {
+			article.innerHTML = "<p>記事が指定されていません。</p>";
+		} else {
+			var path = file.indexOf("articles/") === 0 ? file : "articles/" + file;
+
+			fetch(path)
+				.then(function (response) {
+					if (!response.ok) {
+						throw new Error("記事の読み込みに失敗しました: " + path);
+					}
+					return response.text();
+				})
+				.then(function (text) {
+					article.innerHTML = marked.parse(text);
+
+					article.querySelectorAll("a[href$='.md']").forEach(function (link) {
+						var href = link.getAttribute("href");
+						if (!href || href.startsWith("http") || href.startsWith("mailto:") || href.startsWith("#") || href.startsWith("obsidian:")) {
+							return;
+						}
+
+						var targetPath = href.startsWith("articles/") ? href : href.replace(/^\.\/?/, "");
+						if (!targetPath.startsWith("articles/")) {
+							targetPath = "articles/" + targetPath;
+						}
+
+						var rewrittenUrl = "article.html?file=" + encodeURIComponent(targetPath);
+						link.setAttribute("href", rewrittenUrl);
+						link.addEventListener("click", function (event) {
+							event.preventDefault();
+							window.location.href = rewrittenUrl;
+						});
+					});
+				})
+				.catch(function (error) {
+					article.innerHTML = "<p>記事を読み込めませんでした。</p>";
+					console.error(error);
+				});
+		}
 	</script>
 </body>
 
