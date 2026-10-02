@@ -131,8 +131,12 @@ header {
   padding-top: 0.5em;
 }
 
-.article-page > p {
+.article-navigation {
   margin-bottom: 1em;
+}
+
+.article-navigation a + a {
+  margin-left: 1em;
 }
 
 .markdown-content h1 {
